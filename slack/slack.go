@@ -70,7 +70,7 @@ func Bot(w http.ResponseWriter, req *http.Request) {
 		switch ev := innerEvent.Data.(type) {
 		case *slackevents.AppMentionEvent:
 			now := time.Now()
-			msg := fmt.Sprintf("Today's routine. Practice every 90mins. %s", workouts[now.Weekday().String()])
+			msg := fmt.Sprintf("Today's routine. Practice every 90mins.\n %s", workouts[now.Weekday().String()])
 			api.PostMessage(ev.Channel, slack.MsgOptionText(msg, false))
 		}
 
