@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
-	"time"
 
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/slackevents"
@@ -17,13 +16,13 @@ var secrets struct {
 	SlackSigningSecret string
 }
 
-var workouts = map[string]string{
-	"Monday":    "https://www.youtube.com/watch?v=hJFt4SuUFQE",
-	"Tuesday":   "https://www.youtube.com/watch?v=DyXLiI8PsCQ",
-	"Wednesday": "https://www.youtube.com/watch?v=CzZ8mxAeaKo",
-	"Thursday":  "https://www.youtube.com/watch?v=8xX2Fq-DoB8",
-	"Friday":    "https://www.youtube.com/watch?v=ynyCVCp5OMc",
-}
+// var workouts = map[string]string{
+// 	"Monday":    "https://www.youtube.com/watch?v=hJFt4SuUFQE",
+// 	"Tuesday":   "https://www.youtube.com/watch?v=DyXLiI8PsCQ",
+// 	"Wednesday": "https://www.youtube.com/watch?v=CzZ8mxAeaKo",
+// 	"Thursday":  "https://www.youtube.com/watch?v=8xX2Fq-DoB8",
+// 	"Friday":    "https://www.youtube.com/watch?v=ynyCVCp5OMc",
+// }
 
 var randomWorkouts = []string{
 	"https://www.youtube.com/watch?v=hJFt4SuUFQE",
@@ -78,7 +77,7 @@ func Bot(w http.ResponseWriter, req *http.Request) {
 		innerEvent := eventsAPIEvent.InnerEvent
 		switch ev := innerEvent.Data.(type) {
 		case *slackevents.AppMentionEvent:
-			now := time.Now()
+			// now := time.Now()
 			msg := fmt.Sprintf("Today's routine. Practice every 90mins.\n %s", randomWorkouts[rand.Intn(len(randomWorkouts))])
 			api.PostMessage(ev.Channel, slack.MsgOptionText(msg, false))
 		}
