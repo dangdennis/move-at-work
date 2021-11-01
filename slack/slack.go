@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -24,10 +25,18 @@ var workouts = map[string]string{
 	"Friday":    "https://www.youtube.com/watch?v=ynyCVCp5OMc",
 }
 
+var randomWorkouts = []string{
+	"https://www.youtube.com/watch?v=hJFt4SuUFQE",
+	"https://www.youtube.com/watch?v=DyXLiI8PsCQ",
+	"https://www.youtube.com/watch?v=CzZ8mxAeaKo",
+	"https://www.youtube.com/watch?v=8xX2Fq-DoB8",
+	"https://www.youtube.com/watch?v=ynyCVCp5OMc",
+}
+
 var api = slack.New(secrets.SlackBotToken)
 var signingSecret = secrets.SlackSigningSecret
 
-//encore:api public raw path=/slack/events
+//encore:api public raw method=POST path=/slack/events
 func Bot(w http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
@@ -70,7 +79,7 @@ func Bot(w http.ResponseWriter, req *http.Request) {
 		switch ev := innerEvent.Data.(type) {
 		case *slackevents.AppMentionEvent:
 			now := time.Now()
-			msg := fmt.Sprintf("Today's routine. Practice every 90mins.\n %s", workouts[now.Weekday().String()])
+			msg := fmt.Sprintf("Today's routine. Practice every 90mins.\n %s", randomWorkouts[rand.Intn(len(randomWorkouts))])
 			api.PostMessage(ev.Channel, slack.MsgOptionText(msg, false))
 		}
 
